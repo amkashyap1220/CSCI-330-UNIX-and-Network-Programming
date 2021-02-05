@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
     // Checking to see if the -c option exist
     int cflag = 0;
     int opt;
-    while ((opt = getopt(argc, argv, "c:")) != -1)
+    while ((opt = getopt(argc, argv, "c")) != -1)
     {
         switch (opt) 
         {
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
             printUsage();
             exit(1);
         }
-        performSecretTask(2, argv);
+        performSecretTask(optind, argv);
     } 
     else 
     {
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
             printUsage();
             exit(1);
         }
-        performSecretTask(1, argv);
+        performSecretTask(optind, argv);
     }
     return 0;
 }
