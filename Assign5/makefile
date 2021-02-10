@@ -7,7 +7,7 @@
     
 # Compiler variables
 CXX = g++
-CXXFLAGS = -std=c++11 # -Wall -Werror
+CXXFLAGS = -std=c++11 -Wall -Werror
         
 # Rule to link object code files to create executable file
 dog: main.o dataprocess.o

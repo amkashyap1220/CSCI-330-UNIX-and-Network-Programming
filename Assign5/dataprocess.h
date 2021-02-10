@@ -1,7 +1,9 @@
 #ifndef DATAPROCESS_H
 #define DATAPROCESS_H
 
-void cat(int fd, int buffer_size = 256);
-void catonly(int fd, ssize_t howmuch);
+void caesarCipher(char str[]);
+void binary(char str[]);
+void hex(char str[]);
+void rotation(char str[]);
 
-#endif // !DATAPROCESS_H 
+#endif // !DATAPROCESS_H

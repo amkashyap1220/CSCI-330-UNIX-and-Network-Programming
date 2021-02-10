@@ -15,14 +15,18 @@
 #include <string.h>
 #include <cstdlib>
 
-
 #include "dataprocess.h"
-
 
 using namespace std;
 
+bool sflag, nflag, cflag, rflag, xflag, bflag;
+char *svalue;
+char *nvalue;
+char *cvalue;
+char *rvalue;
 // Function Prototype
-// void readandwrite(int fd);
+void cat(int fd);
+void dog(char str[]);
 
 /**
  * The purpose of this program is to recreate a portion of the cat
@@ -31,129 +35,128 @@ using namespace std;
  * @param argc number of arguments passed
  * @param argv arugments
  */
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[])
+{
 
     // Check options with getopt
-    // flag and value 
-    bool sflag , nflag, cflag, rflag, xflag, bflag;
     sflag = nflag = cflag = rflag = xflag = bflag = false;
-    char* svalue, nvalue, cvalue, rvalue;
 
     int opt;
-    while ((opt = getopt(argc, argv, "s:n:c:r:xb")) != -1) // optarg for argument :
-    {
-        switch (opt) 
+    while ((opt = getopt(argc, argv, "s:n:c:r:xb")) != -1)
+    { // optarg for argument :
+        switch (opt)
         {
-            case 's':
+        case 's':
             sflag = true;
             svalue = optarg;
             break;
 
-            case 'n':
+        case 'n':
             nflag = true;
             nvalue = optarg;
             break;
 
-            case 'c':
+        case 'c':
             cflag = true;
             cvalue = optarg;
             break;
 
-            case 'r':
+        case 'r':
             rflag = true;
             rvalue = optarg;
-            break; 
+            break;
 
-            case 'x':
+        case 'x':
             xflag = true;
             break;
 
-            case 'b':
+        case 'b':
             bflag = true;
             break;
 
-            default: // ERROR NOT CORRECT ARGUMENT
+        default: // ERROR NOT CORRECT ARGUMENT
             exit(1);
         }
     }
 
-    if (rflag && cflag) // -r and -c ERROR
-    {
+    if (rflag && cflag)
+    { // -r and -c ERROR
         exit(1);
     }
-    else if (bflag && xflag) // -b and -x ERROR
-    {
+    else if (bflag && xflag)
+    { // -b and -x ERROR
         exit(1);
     }
-
-    // START OF OLD CAT
-
-    int fd;
 
     // With no FILE, or when FILE is -, read standard in <
-    cout << "optind: "<< optind << endl;
-    if (argc == optind || strcmp(argv[optind], "-") == 0) {
-        char buffer[256];
-        ssize_t number_read;
-
-        number_read = read(0, buffer, 100);
-        while (number_read != 0) {
-            if(number_read == -1) {
-                perror("read");
-                exit(3);
-            }
-            //buffer[number_read] = '\0';
-            write(1, buffer, number_read);
-            number_read = read(0, buffer, 100);
-        }
-    } else {
-
+    if (argc == optind || strcmp(argv[optind], "-") == 0)
+    {
+        cat(0);
+    }
+    else
+    {
+        int fd;
         // loop through each argument passed and open
-        for (int i = optind; i < argc; i++) {
+        for (int i = optind; i < argc; i++)
+        {
             fd = open(argv[i], O_RDONLY, 0644);
-            if (fd == -1) {
+            if (fd == -1)
+            {
                 perror("open");
                 exit(1);
             }
 
             // Concatenate FILE(s) to standard output.
-            if (sflag)
-            {
-                cat(fd, stoi(svalue));
-            }
-            else if (nflag)
-            {
-                catonly(fd, stoi(nvalue));
-            }
-            else
-            {
-                cat(fd);
-            }
-
+            cat(fd);
             // Clean up
             close(fd);
         }
     }
-    
+
     exit(0);
 }
 
-// /**
-//  * This method concatenate files or standard input to standard output
-//  * @param fd file destination
-//  */
-// void readandwrite(int fd) {
-//     char buffer[256];
-//     ssize_t number_read;
+void cat(int fd)
+{
+    int buffersize = 256;
+    if (sflag)
+    {
+        buffersize = stoi(svalue);
+    }
+    char buffer[buffersize];
+    ssize_t number_read;
+    if (nflag)
+    {
+        cout << stoi(nvalue);
+        number_read = read(fd, buffer, stoi(nvalue));
+        if (number_read == -1)
+        {
+            perror("read");
+            exit(1);
+        }
+        dog(buffer);
+        write(1, buffer, number_read);
+    }
+    else
+    {
+        number_read = read(fd, buffer, 100);
+        while (number_read != 0)
+        {
+            if (number_read == -1)
+            {
+                perror("read");
+                exit(1);
+            }
+            dog(buffer);
+            write(1, buffer, number_read);
+            number_read = read(fd, buffer, 100);
+        }
+    }
+}
 
-//     number_read = read(fd, buffer, 10);
-//     while (number_read != 0) {
-//         buffer[number_read] = '\0';
-//         if(number_read == -1) {
-//             perror("read");
-//             exit(3);
-//         }
-//         write(1, buffer, number_read);
-//         number_read = read(fd, buffer, 10);
-//     }
-// }
+void dog(char str[])
+{
+    if (cflag)
+    {
+        }
+}
