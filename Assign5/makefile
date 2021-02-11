@@ -1,9 +1,7 @@
-#
 # PROGRAM:    Assignment 5
 # PROGRAMMER: alexander kashyap
 # LOGON ID:   z1926618
 # DATE DUE:   feb 12 2021
-#
     
 # Compiler variables
 CXX = g++
