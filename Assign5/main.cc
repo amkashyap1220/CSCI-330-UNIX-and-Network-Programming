@@ -24,9 +24,10 @@ char *svalue;
 char *nvalue;
 char *cvalue;
 char *rvalue;
+
 // Function Prototype
 void cat(int fd);
-void dog(char str[]);
+void dog(char str[], int numbers_read);
 
 /**
  * The purpose of this program is to recreate a portion of the cat
@@ -127,15 +128,14 @@ void cat(int fd)
     ssize_t number_read;
     if (nflag)
     {
-        cout << stoi(nvalue);
         number_read = read(fd, buffer, stoi(nvalue));
         if (number_read == -1)
         {
             perror("read");
             exit(1);
         }
-        dog(buffer);
-        write(1, buffer, number_read);
+        dog(buffer, number_read);
+        //write(1, buffer, number_read);
     }
     else
     {
@@ -147,16 +147,39 @@ void cat(int fd)
                 perror("read");
                 exit(1);
             }
-            dog(buffer);
-            write(1, buffer, number_read);
+            dog(buffer, number_read);
+            //write(1, alex, number_read);
             number_read = read(fd, buffer, 100);
         }
     }
 }
 
-void dog(char str[])
+void dog(char buffer[], int number_read)
 {
+
     if (cflag)
     {
-        }
+        caesarCipher(buffer, number_read, stoi(cvalue));
+    }
+    else if (rflag)
+    {
+        rotation(buffer, number_read, stoi(rvalue));
+    }
+
+    if (bflag)
+    {
+        char binary[number_read * 8];
+        toBinary(buffer, number_read, binary);
+        write(1, binary, number_read * 8);
+    }
+    else if (xflag)
+    {
+        char hex[number_read * 2];
+        toHex(buffer, number_read, hex);
+        write(1, hex, number_read * 2);
+    }
+    else
+    {
+        write(1, buffer, number_read);
+    }
 }

@@ -5,48 +5,81 @@
 #include <unistd.h>
 #include <string.h>
 
-void caesarCipher(char str[])
-{
-}
-void binary(char str[])
-{
-}
-void hex(char str[])
-{
-}
-void rotation(char str[])
-{
-}
+#include <stdio.h>
+#include <stdlib.h>
 
-// /**
-//  * This method concatenate files or standard input to standard output
-//  * @param fd file destination
-//  */
-// void cat(int fd, int buffer_size = 256) {
-//     char buffer[buffer_size];
-//     ssize_t number_read;
-
-//     number_read = read(fd, buffer, 100);
-//     while (number_read != 0) {
-//         if(number_read == -1) {
-//             perror("read");
-//             exit(3);
-//         }
-//         //buffer[number_read] = '\0';
-//         write(1, buffer, number_read);
-//         number_read = read(fd, buffer, 100);
-//     }
-// }
-
-// void catonly(int fd, ssize_t howmuch)
-// {
-//     char buffer[howmuch];
-//     ssize_t number_read;
-
-//     number_read = read(fd, buffer, howmuch);
-//     if(number_read == -1) {
-//         perror("read");
-//         exit(1);
-//     }
-//     write(1, buffer, number_read);
-// }
+void caesarCipher(char str[], int size, int shift)
+{
+    for (int i = 0; i < size; i++)
+    {
+        if (str[i] <= 'z' && str[i] >= 'a')
+        {
+            str[i] += shift;
+            while (str[i] > 'z')
+            {
+                str[i] -= 26;
+            } 
+            while (str[i] < 'a')
+            {
+                str[i] += 26;
+            }
+        }
+        else if (str[i] <= 'Z' && str[i] >= 'A')
+        {
+            str[i] += shift;
+            while (str[i] > 'Z')
+            {
+                str[i] -= 26;
+            } 
+            while (str[i] < 'A')
+            {
+                str[i] += 26;
+            }
+        }
+    }
+}
+void rotation(char str[], int size, int shift)
+{
+    for (int i = 0; i < size; i++)
+    {
+        str[i] = (str[i] + shift) % 255;
+    }
+}
+void toBinary(char str[], int size, char binary[])
+{
+    for (int i = 0; i < size; i++)
+    {
+        int num = str[i];
+        for (int z = i * 8 + 7; z >= i * 8; z--)
+        {
+            if (num % 2 == 0) {
+                binary[z] = '0';
+            }
+            else
+            {
+                binary[z] = '1';
+            }
+            num /= 2;
+        }
+    }
+}
+void toHex(char str[], int size, char hex[])
+{
+    for (int i = 0; i < size; i++)
+    {
+        int num = str[i];
+        for (int z = i * 2 + 1; z >= i * 2; z--)
+        {
+            int temp = num % 16;
+            if (temp < 10)
+            {
+                hex[z] = temp + 48;
+            }
+            else
+            {
+                hex[z] = temp + 87;
+            }
+            num /= 16;
+        }
+    }
+}
