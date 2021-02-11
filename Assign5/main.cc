@@ -210,7 +210,11 @@ void dog(char buffer[], int number_read)
     else
     {
         // Otherwise write the buffer normally like cat
-        write(1, buffer, number_read);
+        if (write(1, buffer, number_read) == -1)
+        {
+            perror("write");
+            exit(1);
+        }
     }
     
     // Writing a newline
