@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #include <sys/types.h> /* See NOTES */
 #include <dirent.h>
 #include <sys/socket.h>
@@ -197,3 +198,12 @@ int main(int argc, char *argv[])
 	}
 	close(sock);
 }
+=======
+
+using namespace std;
+
+int main(int argc, char * argv[])
+{
+
+}
+>>>>>>> 1ddff558acc079fa63030a4426d8b99d2c9575cd
